@@ -27,6 +27,9 @@ const queryClient = new QueryClient({
     queries: {
       networkMode: "always",
       refetchOnWindowFocus: false
+    },
+    mutations: {
+      networkMode: "always"
     }
   }
 });

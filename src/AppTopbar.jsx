@@ -99,7 +99,20 @@ const AppTopbar = () => {
           backgroundColor: "#ffffff"
         }}
       >
-        <Menubar model={items} start={start} end={end} />
+        <Menubar
+          style={{
+            position: "sticky",
+            top: "0",
+            zIndex: "100",
+            width: "100%",
+            backgroundColor: "#ffffff",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+            borderRadius: "8px"
+          }}
+          model={items}
+          start={start}
+          end={end}
+        />
       </div>
       <Sidebar
         visible={profileVisible}

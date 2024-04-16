@@ -4,23 +4,34 @@ import { Button } from "primereact/button";
 import { Link } from "react-router-dom";
 import "primeflex/primeflex.css"; // for PrimeFlex utility classes
 
-// Sample JSON Data for the carousel
-const carData = [
-  {
-    brand: "Audi",
-    image: "carsparking.jpg", // Ensure this image is in the public/assets/cars folder
-    description:
-      "Embrace the epitome of luxury with our Audi collection, boasting state-of-the-art engineering and unparalleled comfort. Each model offers a harmonious blend of performance and sophistication, designed for those who demand excellence in every journey."
-  },
-  {
-    brand: "BMW",
-    image: "car-headlights-hood-black-sports-car.png",
-    description:
-      "Unleash the thrill of driving with BMW's dynamic performance and sleek aesthetics. Our lineup showcases cutting-edge innovation and sporty elegance, providing an invigorating experience for enthusiasts and connoisseurs alike."
-  }
-  // ... other cars
-];
+import { getAllDashboardSliderPhotos } from "../../../services/dashboardslider/dashboard-slider-photos-services.js";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+
 const CarouselContainer = () => {
+  const queryClient = useQueryClient();
+  const { data, isLoading, isError, error, status } = useQuery({
+    queryKey: ["db-slider-photos"],
+    queryFn: getAllDashboardSliderPhotos
+  });
+
+  // Check for query errors
+  if (isError) {
+    console.log("Error fetching getAllDashboardSliderPhotos:", error);
+
+    // Access specific error details (if applicable)
+    const errorMessage = error?.response?.data?.message;
+
+    if (errorMessage) {
+      toast.error(errorMessage);
+    } else if (!error?.response) {
+      toast.warning("Check Your Internet Connection Please");
+    } else {
+      toast.error("An Error Occured Please Contact Admin");
+    }
+  }
+
+  console.log("getAllDashboardSliderPhotos data is : ", data);
   const responsiveOptions = [
     {
       breakpoint: "1024px",
@@ -39,15 +50,16 @@ const CarouselContainer = () => {
     }
   ];
 
-  const carouselTemplate = (car) => {
+  const carouselTemplate = (car, index) => {
     return (
       <div
+        key={index}
         className="relative w-full overflow-hidden"
         style={{ minHeight: "70vh", maxHeight: "70vh" }}
       >
         <img
-          src={`/assets/cars/${car.image}`}
-          alt={car.brand}
+          src={`${process.env.REACT_APP_API_BASE_URL}${car.photo_url}`}
+          alt={car.caption}
           style={{
             width: "100%",
             height: "100%",
@@ -65,13 +77,13 @@ const CarouselContainer = () => {
             className="text-3xl md:text-6xl text-white font-bold mb-4"
             style={{ lineHeight: "1.2" }}
           >
-            {car.brand}
+            {car.title}
           </h2>
           <p
             className="text-sm md:text-xl text-white mb-4"
             style={{ lineHeight: "1.5" }}
           >
-            {car.description}
+            {car.caption}
           </p>
           <Link to={"/products"}>
             <Button
@@ -87,7 +99,7 @@ const CarouselContainer = () => {
 
   return (
     <Carousel
-      value={carData}
+      value={data?.data ?? []}
       numVisible={1}
       numScroll={1}
       responsiveOptions={responsiveOptions}
