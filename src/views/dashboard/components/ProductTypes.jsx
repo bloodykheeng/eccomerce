@@ -119,10 +119,14 @@ const ProductTypes = () => {
           justifyContent: "center",
           alignItems: "center",
           width: "100%"
-          // flexDirection: "column"
         }}
       >
-        <h1>Explore Our Car Types Collection</h1>
+        <h1 style={{ fontFamily: "Platypi, sans-serif" }}>
+          {" "}
+          {/* Here's where we apply the Google Font */}
+          Explore Our <span style={{ color: "#FF5733" }}>Car Types</span>{" "}
+          Collection {/* Color a specific part */}
+        </h1>
       </div>
 
       <div
