@@ -80,8 +80,10 @@ const AppFooter = () => {
             color: "white"
           }}
         >
-          <span style={{ color: "#56d879" }}>Subscribe </span>
-          to get news, events & offers
+          <span style={{ color: "#FF0707" }}>Subscribe</span>{" "}
+          <span style={{ color: "#4DFF07" }}>To our Car</span>
+          <span style={{ color: "#FFEE01" }}> Collection</span> to get news,
+          events & offers
         </h1>
 
         <div
@@ -89,27 +91,12 @@ const AppFooter = () => {
             position: "relative"
           }}
         >
-          <InputText
-            placeholder="Search product..."
-            style={{
-              width: "100%", // Ensure input takes full width
-              padding: "0.625rem",
-              borderRadius: "0.375rem",
-              border: "1px solid #ccc" // Border color can be adjusted
-            }}
-          />
-          <Button
-            icon="pi pi-search"
-            style={{
-              position: "absolute",
-              top: "0",
-              right: "0",
-              borderTopRightRadius: "0.375rem",
-              borderBottomRightRadius: "0.375rem",
-              backgroundColor: "#56d879", // Background color for the button
-              color: "white"
-            }}
-          />
+          <React.Fragment>
+            <div className="p-inputgroup" style={{ flex: "1 1 300px" }}>
+              <InputText placeholder="Enter Email" style={{ width: "100%" }} />
+              <Button icon="pi pi-search" style={{}} />
+            </div>
+          </React.Fragment>
         </div>
       </div>
 

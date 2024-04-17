@@ -85,14 +85,37 @@ const ServiceOfferings = () => {
     <div
       style={{
         display: "flex",
-        flexWrap: "wrap",
         justifyContent: "center",
         alignItems: "center",
+        flexDirection: "column",
         width: "100%",
         backgroundColor: "#FCFAED"
       }}
     >
-      {services.map((service) => serviceCard(service))}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%"
+        }}
+      >
+        <h1 style={{ fontFamily: "Platypi, sans-serif", fontSize: "2rem" }}>
+          Our <span style={{ color: "#FE1A1A" }}>Core</span> Values
+        </h1>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          backgroundColor: "#FCFAED"
+        }}
+      >
+        {services.map((service) => serviceCard(service))}
+      </div>
     </div>
   );
 };
