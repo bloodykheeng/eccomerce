@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // import Swiper from "swiper";
 import { EffectFade, Navigation, Pagination, Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -20,6 +20,17 @@ import { Skeleton } from "primereact/skeleton";
 const CarouselContainer = () => {
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["db-slider-photos"],
     queryFn: getAllDashboardSliderPhotos
@@ -84,13 +95,34 @@ const CarouselContainer = () => {
     ); // Show skeleton when loading
   }
 
+  const descriptionStyle = {
+    position: windowWidth > 768 ? "absolute" : "relative",
+    bottom: windowWidth > 768 ? "10px" : "initial",
+    right: windowWidth > 768 ? "10px" : "initial",
+    left: windowWidth > 768 ? "initial" : "50%",
+    transform: windowWidth > 768 ? "none" : "translateX(-50%)",
+    backgroundColor: isHovered ? "#FDDFAF" : "#FFE9C7",
+    padding: "20px",
+    borderRadius: "5px",
+    color: isHovered ? "#ffffff" : "#131313",
+    textAlign: "left",
+    transition: "all 0.3s ease",
+    width: windowWidth > 768 ? "auto" : "100%",
+    marginTop: windowWidth > 768 ? "0" : "0px"
+  };
+
+  const arrowStyle = {
+    display: windowWidth > 768 ? "block" : "none" // Show arrows only on wider screens
+  };
+
   return (
     <div>
       <Swiper
         modules={[Navigation, Pagination, Autoplay, EffectFade]}
         navigation={{
           nextEl: ".swiper-button-next-custom",
-          prevEl: ".swiper-button-prev-custom"
+          prevEl: ".swiper-button-prev-custom",
+          disabledClass: "swiper-button-disabled"
         }}
         pagination={{ clickable: true }}
         spaceBetween={50}
@@ -100,7 +132,8 @@ const CarouselContainer = () => {
         loop={true}
         style={{
           "--swiper-navigation-color": "#fff",
-          "--swiper-pagination-color": "#fff"
+          "--swiper-pagination-color": "#fff",
+          "--swiper-button-disabled": windowWidth > 768 ? false : true
         }}
       >
         {data?.data.map((car, index) => (
@@ -115,21 +148,22 @@ const CarouselContainer = () => {
             <div
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
-              style={{
-                position: "absolute",
-                bottom: 10,
-                right: 10,
-                // left: "50%",
-                // transform: "translateX(-50%)",
-                backgroundColor: isHovered
-                  ? "rgba(0, 0, 0, 0.7)"
-                  : "rgba(0, 0, 0, 0.3)",
-                padding: "20px",
-                borderRadius: "5px",
-                color: isHovered ? "#ffffff" : "#ddd",
-                textAlign: "left",
-                transition: "all 0.3s ease"
-              }}
+              // style={{
+              //   position: "absolute",
+              //   bottom: 10,
+              //   right: 10,
+              //   // left: "50%",
+              //   // transform: "translateX(-50%)",
+              //   backgroundColor: isHovered
+              //     ? "rgba(0, 0, 0, 0.7)"
+              //     : "rgba(0, 0, 0, 0.3)",
+              //   padding: "20px",
+              //   borderRadius: "5px",
+              //   color: isHovered ? "#ffffff" : "#ddd",
+              //   textAlign: "left",
+              //   transition: "all 0.3s ease"
+              // }}
+              style={descriptionStyle}
             >
               <h2 style={{ margin: "0 0 10px 0", fontSize: "2rem" }}>
                 {car.title}
@@ -138,8 +172,14 @@ const CarouselContainer = () => {
             </div>
 
             {/* Custom white next/prev buttons (optional) */}
-            <div className="swiper-button-next swiper-button-next-custom"></div>
-            <div className="swiper-button-prev swiper-button-prev-custom"></div>
+            <div
+              className="swiper-button-next swiper-button-next-custom"
+              style={arrowStyle}
+            ></div>
+            <div
+              className="swiper-button-prev swiper-button-prev-custom"
+              style={arrowStyle}
+            ></div>
           </SwiperSlide>
         ))}
       </Swiper>
