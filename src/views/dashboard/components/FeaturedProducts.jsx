@@ -15,6 +15,8 @@ import { getAllCars } from "../../../services/cars/car-service.js";
 import { ProgressBar } from "primereact/progressbar";
 
 import { Skeleton } from "primereact/skeleton";
+import ProductDetail from "./product-details/ProductDetail";
+import ProductMedia from "./product-details/ProductMedia";
 
 export default function FeaturedProducts() {
   const [layout, setLayout] = useState("grid");
@@ -22,6 +24,8 @@ export default function FeaturedProducts() {
   //
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [displayDialog, setDisplayDialog] = useState(false);
+
+  const [displayProductDialog, setDisplayProductDialog] = useState(false);
 
   const navigate = useNavigate();
   const { data, isLoading, isError, error } = useQuery({
@@ -32,13 +36,40 @@ export default function FeaturedProducts() {
   // Loading handling
   if (isLoading) {
     return (
-      <div style={{ margin: "20px", width: "100%" }}>
-        <ProgressBar
-          mode="indeterminate"
-          style={{ height: "6px" }}
-        ></ProgressBar>
+      <div style={{ width: "100%", height: "400px", overflow: "hidden" }}>
+        <Skeleton width="100%" height="100%">
+          <Skeleton
+            style={{
+              position: "absolute",
+              bottom: 20,
+              left: 20,
+
+              padding: "20px",
+              borderRadius: "5px",
+
+              textAlign: "left",
+              transition: "all 0.3s ease"
+            }}
+          >
+            <Skeleton style={{ margin: "0 0 10px 0", fontSize: "2rem" }}>
+              <div style={{ margin: "20px", width: "100%" }}>
+                <ProgressBar
+                  mode="indeterminate"
+                  style={{ height: "6px" }}
+                ></ProgressBar>
+              </div>
+            </Skeleton>
+            <Skeleton>
+              {" "}
+              <ProgressBar
+                mode="indeterminate"
+                style={{ height: "6px" }}
+              ></ProgressBar>
+            </Skeleton>
+          </Skeleton>
+        </Skeleton>
       </div>
-    ); // Show progress bar when loading
+    ); // Show skeleton when loading
   }
 
   if (isError) {
@@ -73,29 +104,7 @@ export default function FeaturedProducts() {
 
   const listItem = (product, index) => {
     // Check if product data is available
-    if (!product && isLoading) {
-      return (
-        <div className="col-12" key={index}>
-          <div className="flex gap-4 p-4 flex-column xl:flex-row xl:align-items-start">
-            <Skeleton className="block mx-auto w-9 sm:w-16rem xl:w-10rem shadow-2 h-6rem xl:block border-round" />
-            <div className="flex flex-1 gap-4 flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start">
-              <div className="flex gap-3 flex-column align-items-center sm:align-items-start">
-                <Skeleton className="w-8rem border-round h-2rem" />
-                <Skeleton className="w-6rem border-round h-1rem" />
-                <div className="flex gap-3 align-items-center">
-                  <Skeleton className="w-6rem border-round h-1rem" />
-                  <Skeleton className="w-3rem border-round h-1rem" />
-                </div>
-              </div>
-              <div className="flex gap-3 sm:flex-column align-items-center sm:align-items-end sm:gap-2">
-                <Skeleton className="w-4rem border-round h-2rem" />
-                <Skeleton shape="circle" className="w-3rem h-3rem" />
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-    }
+
     return (
       <div className="col-12" key={product.id}>
         <div
@@ -106,7 +115,9 @@ export default function FeaturedProducts() {
         >
           <img
             className="block mx-auto w-9 sm:w-16rem xl:w-10rem shadow-2 xl:block border-round"
-            src={`${product?.photos && product?.photos[0]}`}
+            src={`${product?.photos && process.env.REACT_APP_API_BASE_URL}${
+              product?.photos[0]?.photo_url
+            }`}
             alt={product?.name}
             onClick={() => {
               setSelectedProduct(product);
@@ -116,7 +127,18 @@ export default function FeaturedProducts() {
           />
           <div className="flex flex-1 gap-4 flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start">
             <div className="flex gap-3 flex-column align-items-center sm:align-items-start">
-              <div className="text-2xl font-bold text-900">{product?.name}</div>
+              <div
+                className="text-2xl font-bold text-900"
+                onClick={() => {
+                  setSelectedProduct(product);
+                  setDisplayProductDialog(true);
+                }}
+                style={{
+                  cursor: "pointer"
+                }}
+              >
+                {product?.name}jjjjj
+              </div>
               <Rating value={product?.rating} readOnly cancel={false}></Rating>
               <div className="flex gap-3 align-items-center">
                 <span className="flex gap-2 align-items-center">
@@ -145,30 +167,6 @@ export default function FeaturedProducts() {
 
   const gridItem = (product) => {
     // Check if product data is available
-    if (!product && isLoading) {
-      return (
-        <div
-          className="p-2 col-12 sm:col-6 lg:col-12 xl:col-4"
-          key={product.id}
-        >
-          <div className="p-4 border-1 surface-border surface-card border-round">
-            <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
-              <Skeleton className="w-6rem border-round h-1rem" />
-              <Skeleton className="w-3rem border-round h-1rem" />
-            </div>
-            <div className="flex gap-3 py-5 flex-column align-items-center">
-              <Skeleton className="w-9 shadow-2 border-round h-10rem" />
-              <Skeleton className="w-8rem border-round h-2rem" />
-              <Skeleton className="w-6rem border-round h-1rem" />
-            </div>
-            <div className="flex align-items-center justify-content-between">
-              <Skeleton className="w-4rem border-round h-2rem" />
-              <Skeleton shape="circle" className="w-3rem h-3rem" />
-            </div>
-          </div>
-        </div>
-      );
-    }
 
     return (
       <div className="p-2 col-12 sm:col-6 lg:col-12 xl:col-4" key={product.id}>
@@ -184,17 +182,49 @@ export default function FeaturedProducts() {
             ></Tag>
           </div>
           <div className="flex gap-3 py-5 flex-column align-items-center">
-            <img
+            <center>
+              <div
+                className="shadow-2 border-round"
+                style={{
+                  width: "300px",
+                  height: "300px",
+                  background: `url("${
+                    product?.photos && process.env.REACT_APP_API_BASE_URL
+                  }${product?.photos[0]?.photo_url}")`,
+                  backgroundSize: "cover",
+                  cursor: "pointer"
+                }}
+                onClick={() => {
+                  setSelectedProduct(product);
+                  setDisplayDialog(true);
+                }}
+              ></div>
+            </center>
+
+            {/* <img
               className="w-9 shadow-2 border-round"
-              src={`${product?.photos && product?.photos[0]}`}
+              src={`${product?.photos && process.env.REACT_APP_API_BASE_URL}${
+                product?.photos[0]?.photo_url
+              }`}
               alt={product?.name}
               onClick={() => {
                 setSelectedProduct(product);
                 setDisplayDialog(true);
               }}
               style={{ width: "100%", cursor: "pointer" }}
-            />
-            <div className="text-2xl font-bold">{product?.name}</div>
+            /> */}
+            <div
+              className="text-2xl font-bold"
+              onClick={() => {
+                setSelectedProduct(product);
+                setDisplayProductDialog(true);
+              }}
+              style={{
+                cursor: "pointer"
+              }}
+            >
+              {product?.name}
+            </div>
             <Rating value={product?.rating} readOnly cancel={false}></Rating>
           </div>
           <div className="flex align-items-center justify-content-between">
@@ -280,26 +310,29 @@ export default function FeaturedProducts() {
         </div>
       )}
 
-      {selectedProduct && (
+      {selectedProduct && displayProductDialog && (
         <Dialog
+          header="Product Details"
+          visible={displayProductDialog}
+          onHide={() => setDisplayProductDialog(false)}
+          maximizable={true}
+          modal
+          showHeader={true}
+        >
+          <ProductDetail selectedProduct={selectedProduct} />
+        </Dialog>
+      )}
+
+      {selectedProduct && displayDialog && (
+        <Dialog
+          header="Product Media"
           visible={displayDialog}
           onHide={() => setDisplayDialog(false)}
-          style={{ width: "50vw" }}
-          footer={imageDialogFooter}
+          maximizable={true}
           modal
-          showHeader={false}
+          showHeader={true}
         >
-          {selectedProduct.photos.map((photoUrl, index) => (
-            <img
-              key={index}
-              src={photoUrl}
-              alt={`Product Image ${index + 1}`}
-              onError={(e) =>
-                (e.target.src = "https://via.placeholder.com/150")
-              }
-              style={{ width: "100%", display: "block", marginBottom: "1rem" }}
-            />
-          ))}
+          <ProductMedia selectedProduct={selectedProduct} />
         </Dialog>
       )}
     </div>

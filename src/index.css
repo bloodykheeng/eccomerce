@@ -11,3 +11,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+@import "~react-image-gallery/styles/css/image-gallery.css";
+
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+
+@import "primereact/resources/themes/lara-light-blue/theme.css";
