@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
@@ -57,16 +57,65 @@ export const footerSupportLinks = [
   }
 ];
 
-const AppFooter = () => {
+//
+const ulStyle = {
+  textAlign: "left",
+  listStyleType: "none", // No bullets
+  padding: 0 // Remove default padding
+};
+
+const liStyle = {
+  marginBottom: "4px",
+  fontSize: "1rem",
+  lineHeight: "1.5rem",
+  color: "#FFFFFF",
+  cursor: "pointer",
+  textDecoration: "none",
+  fontWeight: "bold"
+};
+
+const HoverLink = ({ to, children }) => {
+  const [hover, setHover] = useState(false);
+
+  const style = {
+    fontSize: "1rem",
+    lineHeight: "1.5rem",
+    color: hover ? "#FFDCA4" : "#FFFFFF", // Change color on hover
+    cursor: "pointer",
+    textDecoration: "none",
+    fontWeight: "bold"
+  };
+
   return (
-    <div style={{ backgroundColor: "#000", color: "white" }}>
+    <Link
+      to={to}
+      style={style}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+    >
+      {children}
+    </Link>
+  );
+};
+
+const AppFooter = () => {
+  const [hover, setHover] = useState(false);
+  return (
+    <div
+      style={{
+        color: "white",
+        background: "#7474BF" /* Fallback for older browsers */,
+        backgroundImage:
+          "linear-gradient(to right, #348AC7, #7474BF)" /* Modern browsers */
+      }}
+    >
       <div
         style={{
           padding: "1rem", // Reduced padding for smaller screens
           display: "flex",
           flexWrap: "wrap",
           alignItems: "center", // Center-align items
-          backgroundColor: "#342ac8",
+          backgroundColor: "#FFDCA4",
           color: "white",
           gap: "1rem", // Add gap between elements for better spacing
           justifyContent: "space-between"
@@ -80,9 +129,9 @@ const AppFooter = () => {
             color: "white"
           }}
         >
-          <span style={{ color: "#FF0707" }}>Subscribe</span>{" "}
+          <span style={{ color: "#0105FF" }}>Subscribe</span>{" "}
           <span style={{ color: "#4DFF07" }}>To our Car</span>
-          <span style={{ color: "#FFEE01" }}> Collection</span> to get news,
+          <span style={{ color: "#FFB701" }}> Collection</span> to get news,
           events & offers
         </h1>
 
@@ -104,7 +153,9 @@ const AppFooter = () => {
       <div
         style={{
           display: "flex",
-          flexWrap: "wrap", // Allows children to wrap onto multiple lines
+          flexWrap: "wrap",
+          alignItems: "center",
+
           gap: "24px",
           padding: "64px 20px",
           textAlign: "center",
@@ -125,8 +176,18 @@ const AppFooter = () => {
             alt="logo/image"
             style={{ width: "40%" }}
           />
-          <p style={{ marginTop: "12px" }}>
-            The home and elements needed to create beautiful products
+          <p
+            style={{
+              marginTop: "12px",
+              fontSize: "2rem",
+
+              color: "#FFFFFF",
+              cursor: "pointer",
+              textDecoration: "none", // Apply text-decoration: none for links
+              fontWeight: "bold" // Apply font-weight for emphasis (optional)
+            }}
+          >
+            Unleash Your Dream Ride
           </p>
 
           <div
@@ -139,7 +200,7 @@ const AppFooter = () => {
               ></i>
             </a>
             <a
-              href="https://twitter.com/Asfak00"
+              href="https://twitter.com/"
               target="_blank"
               style={{ marginLeft: "15px" }}
             >
@@ -148,18 +209,9 @@ const AppFooter = () => {
                 style={{ fontSize: "25px", cursor: "pointer" }}
               ></i>
             </a>
+
             <a
-              href="https://github.com/asfak00"
-              target="_blank"
-              style={{ marginLeft: "15px" }}
-            >
-              <i
-                className="pi pi-github"
-                style={{ fontSize: "25px", cursor: "pointer" }}
-              ></i>
-            </a>
-            <a
-              href="https://www.instagram.com/asfakahmed22/"
+              href="https://www.instagram.com/"
               target="_blank"
               style={{ marginLeft: "15px" }}
             >
@@ -171,59 +223,41 @@ const AppFooter = () => {
           </div>
         </ul>
 
-        <ul style={{ textAlign: "left" }}>
-          <h1 style={{ marginBottom: "4px", fontWeight: "600" }}>Company</h1>
+        <ul style={ulStyle}>
+          <h1
+            style={{ marginBottom: "4px", fontWeight: "600", color: "#0105FF" }}
+          >
+            Company
+          </h1>
           {footerCompanyLinks?.map((link) => (
-            <li key={link.name}>
-              <Link
-                to={link.link}
-                style={{
-                  fontSize: "0.875rem",
-                  lineHeight: "1.5rem",
-                  color: "#718096",
-                  cursor: "pointer"
-                }}
-              >
-                {link.name}
-              </Link>
+            <li key={link.name} style={liStyle}>
+              <HoverLink to={link.link}>{link.name}</HoverLink>
             </li>
           ))}
         </ul>
 
-        <ul style={{ textAlign: "left" }}>
-          <h1 style={{ marginBottom: "4px", fontWeight: "600" }}>Shop</h1>
+        <ul style={ulStyle}>
+          <h1
+            style={{ marginBottom: "4px", fontWeight: "600", color: "#4DFF07" }}
+          >
+            Shop
+          </h1>
           {footerProductLinks?.map((link) => (
-            <li key={link.name}>
-              <Link
-                to={link.link}
-                style={{
-                  fontSize: "0.875rem",
-                  lineHeight: "1.5rem",
-                  color: "#718096",
-                  cursor: "pointer"
-                }}
-              >
-                {link.name}
-              </Link>
+            <li key={link.name} style={liStyle}>
+              <HoverLink to={link.link}>{link.name}</HoverLink>
             </li>
           ))}
         </ul>
 
-        <ul style={{ textAlign: "left" }}>
-          <h1 style={{ marginBottom: "4px", fontWeight: "600" }}>Support</h1>
+        <ul style={ulStyle}>
+          <h1
+            style={{ marginBottom: "4px", fontWeight: "600", color: "#FFB701" }}
+          >
+            Support
+          </h1>
           {footerSupportLinks?.map((link) => (
-            <li key={link.name}>
-              <Link
-                to={link.link}
-                style={{
-                  fontSize: "0.875rem",
-                  lineHeight: "1.5rem",
-                  color: "#718096",
-                  cursor: "pointer"
-                }}
-              >
-                {link.name}
-              </Link>
+            <li key={link.name} style={liStyle}>
+              <HoverLink to={link.link}>{link.name}</HoverLink>
             </li>
           ))}
         </ul>
@@ -237,7 +271,7 @@ const AppFooter = () => {
           paddingTop: "8px",
           paddingBottom: "32px",
           textAlign: "center",
-          color: "#718096"
+          color: "#FFFFFF"
         }}
       >
         <span>
