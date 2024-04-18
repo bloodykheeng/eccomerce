@@ -4,12 +4,15 @@
   "private": true,
   "dependencies": {
     "@fontsource/roboto": "^5.0.12",
+    "@react-three/drei": "^9.105.4",
+    "@react-three/fiber": "^8.16.2",
     "@tanstack/react-query": "^5.28.14",
     "@tanstack/react-query-devtools": "^5.28.14",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.6.8",
+    "babel-plugin-glsl": "^1.0.0",
     "framer-motion": "^11.0.25",
     "primeflex": "^3.3.1",
     "primeicons": "^7.0.0",
@@ -21,6 +24,7 @@
     "react-scripts": "5.0.1",
     "react-toastify": "^10.0.5",
     "swiper": "^11.1.1",
+    "three": "^0.163.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

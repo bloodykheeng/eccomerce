@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // import Swiper from "swiper";
 import { EffectFade, Navigation, Pagination, Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -13,7 +13,12 @@ import { useNavigate } from "react-router-dom";
 import { getAllDashboardSliderPhotos } from "../../../services/dashboardslider/dashboard-slider-photos-services.js";
 import "primereact/resources/themes/lara-light-blue/theme.css";
 
+//
+import CustomShaderMaterial from "./CustomShaderMaterial";
+import { Skeleton } from "primereact/skeleton";
+
 const CarouselContainer = () => {
+  const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["db-slider-photos"],
@@ -26,66 +31,119 @@ const CarouselContainer = () => {
     return null; // Early return on error
   }
 
+  // if (isLoading) {
+  //   return (
+  //     <div style={{ margin: "20px", width: "100%" }}>
+  //       <ProgressBar
+  //         mode="indeterminate"
+  //         style={{ height: "6px" }}
+  //       ></ProgressBar>
+  //     </div>
+  //   ); // Show progress bar when loading
+  // }
+
   if (isLoading) {
     return (
-      <div style={{ margin: "20px", width: "100%" }}>
-        <ProgressBar
-          mode="indeterminate"
-          style={{ height: "6px" }}
-        ></ProgressBar>
+      <div style={{ width: "100%", height: "70vh", overflow: "hidden" }}>
+        <Skeleton width="100%" height="100%">
+          <Skeleton
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            style={{
+              position: "absolute",
+              bottom: 20,
+              left: 20,
+              backgroundColor: isHovered
+                ? "rgba(0, 0, 0, 0.7)"
+                : "rgba(0, 0, 0, 0.5)",
+              padding: "20px",
+              borderRadius: "5px",
+              color: isHovered ? "#ffffff" : "#ddd",
+              textAlign: "left",
+              transition: "all 0.3s ease"
+            }}
+          >
+            <Skeleton style={{ margin: "0 0 10px 0", fontSize: "2rem" }}>
+              <div style={{ margin: "20px", width: "100%" }}>
+                <ProgressBar
+                  mode="indeterminate"
+                  style={{ height: "6px" }}
+                ></ProgressBar>
+              </div>
+            </Skeleton>
+            <Skeleton>
+              {" "}
+              <ProgressBar
+                mode="indeterminate"
+                style={{ height: "6px" }}
+              ></ProgressBar>
+            </Skeleton>
+          </Skeleton>
+        </Skeleton>
       </div>
-    ); // Show progress bar when loading
+    ); // Show skeleton when loading
   }
 
   return (
-    <Swiper
-      modules={[Navigation, Pagination, Autoplay, EffectFade]}
-      navigation
-      pagination={{ clickable: true }}
-      spaceBetween={50}
-      slidesPerView={1}
-      lazy={true}
-      autoplay={{ delay: 10000, disableOnInteraction: false }}
-      loop={true}
-    >
-      {data?.data.map((car, index) => (
-        <SwiperSlide zoom={true} key={index}>
-          <img
-            src={`${process.env.REACT_APP_API_BASE_URL}${car.photo_url}`}
-            alt={car.caption}
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-            loading="lazy"
-          />
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              backgroundColor: "rgba(0, 0, 0, 0.5)",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              padding: "20px",
-              boxSizing: "border-box"
-            }}
-          >
-            <h2
-              style={{ color: "white", fontSize: "2rem", marginBottom: "20px" }}
-            >
-              {car.title}
-            </h2>
-            <p style={{ color: "white", marginBottom: "20px" }}>
-              {car.caption}
-            </p>
+    <div>
+      <Swiper
+        modules={[Navigation, Pagination, Autoplay, EffectFade]}
+        navigation={{
+          nextEl: ".swiper-button-next-custom",
+          prevEl: ".swiper-button-prev-custom"
+        }}
+        pagination={{ clickable: true }}
+        spaceBetween={50}
+        slidesPerView={1}
+        lazy={true}
+        autoplay={{ delay: 7000, disableOnInteraction: false }}
+        loop={true}
+        style={{
+          "--swiper-navigation-color": "#fff",
+          "--swiper-pagination-color": "#fff"
+        }}
+      >
+        {data?.data.map((car, index) => (
+          <SwiperSlide zoom={true} key={index}>
+            <img
+              src={`${process.env.REACT_APP_API_BASE_URL}${car.photo_url}`}
+              alt={car.caption}
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              loading="lazy"
+            />
 
-            {/* <Button label="Shop Now" onClick={() => navigate("/products")} /> */}
-          </div>
-        </SwiperSlide>
-      ))}
-    </Swiper>
+            <div
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+              style={{
+                position: "absolute",
+                bottom: 10,
+                right: 10,
+                // left: "50%",
+                // transform: "translateX(-50%)",
+                backgroundColor: isHovered
+                  ? "rgba(0, 0, 0, 0.7)"
+                  : "rgba(0, 0, 0, 0.3)",
+                padding: "20px",
+                borderRadius: "5px",
+                color: isHovered ? "#ffffff" : "#ddd",
+                textAlign: "left",
+                transition: "all 0.3s ease"
+              }}
+            >
+              <h2 style={{ margin: "0 0 10px 0", fontSize: "2rem" }}>
+                {car.title}
+              </h2>
+              <p>{car.caption}</p>
+            </div>
+
+            {/* Custom white next/prev buttons (optional) */}
+            <div className="swiper-button-next swiper-button-next-custom"></div>
+            <div className="swiper-button-prev swiper-button-prev-custom"></div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </div>
   );
 };
 

@@ -16,6 +16,8 @@ import { toast } from "react-toastify";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { getAllCarTypes } from "../../../services/cars/car-types-service";
 
+import { Skeleton } from "primereact/skeleton";
+
 export default function ProductTypes() {
   const navigate = useNavigate();
   const { data, isLoading, isError, error } = useQuery({
@@ -34,6 +36,16 @@ export default function ProductTypes() {
   const handleClick = (productType) => {
     navigate("/products", { state: { productType: productType.name } });
   };
+
+  console.log("product types : ", data);
+
+  if (isLoading) {
+    return (
+      <div style={{ width: "100%", height: "300px", overflow: "hidden" }}>
+        <Skeleton width="100%" height="100%"></Skeleton>
+      </div>
+    ); // Show skeleton when loading
+  }
 
   return (
     <>
@@ -75,36 +87,57 @@ export default function ProductTypes() {
             <ProgressSpinner style={{ width: "50px", height: "50px" }} />
           ) : (
             <Swiper
-              slidesPerView={4}
-              spaceBetween={30}
+              // slidesPerView={4}
+              // spaceBetween={20}
               centeredSlides={true}
-              pagination={{
-                clickable: true
-              }}
               modules={[Navigation, Pagination, Autoplay]}
               // navigation
               pagination={{ clickable: true }}
               className="mySwiper"
-              autoplay={{ delay: 10000, disableOnInteraction: false }}
+              autoplay={{ delay: 5000, disableOnInteraction: false }}
               loop={true}
+              // style={{
+              //   width: "100%",
+              //   height: "170px",
+              //   display: "flex",
+              //   alignItems: "center",
+              //   justifyContent: "center",
+              //   padding: "1rem"
+              // }}
               style={{
                 width: "100%",
-                height: "170px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                padding: "1rem"
+                paddingTop: "50px",
+                paddingBottom: "50px"
+              }}
+              // slidesPerView={3}
+              // spaceBetween={30}
+              pagination={{
+                clickable: true
+              }}
+              breakpoints={{
+                0: { slidesPerView: 1 },
+                480: { slidesPerView: 3, spaceBetween: 30 },
+                768: { slidesPerView: 4, spaceBetween: 30 },
+                1024: { slidesPerView: 4, spaceBetween: 30 }
               }}
             >
               {data?.data.map((productType, index) => (
                 <SwiperSlide
+                  // style={{
+                  //   width: "200px",
+                  //   height: "150px",
+                  //   margin: "1rem",
+                  //   cursor: "pointer",
+                  //   position: "relative", // Relative positioning for the slide container
+                  //   borderRadius: "8px",
+                  //   boxShadow: "0 2px 4px 0 rgba(0,0,0,0.2)"
+                  // }}
                   style={{
-                    width: "200px",
-                    height: "150px",
-                    margin: "1rem",
+                    width: "300px",
+                    height: "300px",
+                    background: `url("${process.env.REACT_APP_API_BASE_URL}${productType.photo_url}")`,
+                    backgroundSize: "cover",
                     cursor: "pointer",
-                    position: "relative", // Relative positioning for the slide container
-                    borderRadius: "8px",
                     boxShadow: "0 2px 4px 0 rgba(0,0,0,0.2)"
                   }}
                   onClick={() => handleClick(productType)}
@@ -123,18 +156,8 @@ export default function ProductTypes() {
                       zIndex: 2
                     }}
                   >
-                    {productType.title}
+                    {productType.name}
                   </div>
-                  <img
-                    src={`${process.env.REACT_APP_API_BASE_URL}${productType.photo_url}`}
-                    alt={productType.name}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      borderRadius: "8px"
-                    }}
-                  />
                 </SwiperSlide>
               ))}
             </Swiper>

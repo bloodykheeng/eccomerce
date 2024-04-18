@@ -1,6 +1,18 @@
 import React from "react";
 import { Card } from "primereact/card";
 
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/effect-coverflow";
+import "swiper/css/pagination";
+
+// import required modules
+import { EffectCoverflow, Pagination } from "swiper/modules";
+// import required modules
+import { Navigation, Autoplay } from "swiper/modules";
+
 const ServiceOfferings = () => {
   const services = [
     {
@@ -57,8 +69,10 @@ const ServiceOfferings = () => {
         textAlign: "center",
         margin: "0.5rem",
         padding: "0.5rem", // Reduced padding
-        width: "200px", // Fixed width for all cards
-        height: "200px", // Reduced fixed height for consistency
+        // width: "200px", // Fixed width for all cards
+        // height: "200px", // Reduced fixed height for consistency
+        width: "100%",
+        height: "100%",
         verticalAlign: "top",
         boxShadow: "0 2px 4px rgba(0,0,0,0.1)", // subtle shadow
         transition: "box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out", // Add a transition effect for shadow and transform
@@ -114,7 +128,43 @@ const ServiceOfferings = () => {
           backgroundColor: "#FCFAED"
         }}
       >
-        {services.map((service) => serviceCard(service))}
+        <Swiper
+          effect={"coverflow"}
+          grabCursor={true}
+          centeredSlides={true}
+          slidesPerView={"auto"}
+          coverflowEffect={{
+            rotate: 50,
+            stretch: 0,
+            depth: 100,
+            modifier: 1,
+            slideShadows: false
+          }}
+          pagination={true}
+          modules={[EffectCoverflow, Pagination, Autoplay]}
+          autoplay={{ delay: 4000, disableOnInteraction: false }}
+          loop={true}
+          pagination={{ clickable: true }}
+          className="mySwiper"
+          style={{
+            width: "100%",
+            paddingTop: "50px",
+            paddingBottom: "50px"
+          }}
+        >
+          {services.map((service) => (
+            <SwiperSlide
+              style={{
+                backgroundPosition: "center",
+                backgroundSize: "cover",
+                width: "300px",
+                height: "300px"
+              }}
+            >
+              {serviceCard(service)}
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
     </div>
   );

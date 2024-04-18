@@ -14,6 +14,7 @@ const Dashboard = () => {
       <CarouselContainer />
       <ServiceOfferings />
       <ProductTypes />
+
       {/* <BestDealsCarousel /> */}
       <FeaturedProducts />
       <AppFooter />
