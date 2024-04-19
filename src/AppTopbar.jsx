@@ -128,10 +128,20 @@ const AppTopbar = () => {
       <Button label="Login" icon="pi pi-user" onClick={handleLoginClick} />
     </React.Fragment>
   );
+  const menubarStyle = {
+    position: "sticky",
+    top: "0",
+    zIndex: "100",
+    width: "100%",
+    backgroundColor:
+      "background-image: linear-gradient(to bottom, #777777 0%, #555555 100%)",
+    boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+    borderRadius: "8px"
+  };
 
   return (
     <React.Fragment>
-      <div>
+      <div style={menubarStyle}>
         <Menubar className="app-topbar" model={items} start={start} end={end} />
       </div>
       <Sidebar

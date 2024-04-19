@@ -57,6 +57,14 @@ code {
 }
 
 /* changing the default prime react cards padding  */
-.p-card .p-card-body {
+/* .p-card .p-card-body {
   padding: 0.5rem;
+} */
+
+@media (max-width: 600px) {
+  .p-card .p-card-body,
+  .p-card .p-card-body {
+    padding: 0.5rem;
+    border-radius: 0;
+  }
 }
