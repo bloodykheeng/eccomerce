@@ -76,3 +76,34 @@ code {
 .p-card {
   border-radius: 0;
 }
+
+.productDetailSection {
+  flex-grow: 1;
+  margin: 0 auto;
+  max-width: 1200px;
+  border-bottom: 1px solid #ddd;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .productDetailSection {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+}
+
+.p-menuitem-active {
+  color: red;
+}
+
+.p-menuitem-text-active {
+  background-color: blue;
+}
+.active-menuitem {
+  background-color: blue; /* or any other styling */
+}

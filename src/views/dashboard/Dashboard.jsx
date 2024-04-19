@@ -52,7 +52,7 @@ const Dashboard = () => {
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
-    }, 10000); // Simulates a loading time of 5 seconds.
+    }, 3000); // Simulates a loading time of 5 seconds.
   }, []);
 
   // Define animation variants for visibility transitions
@@ -69,7 +69,6 @@ const Dashboard = () => {
   return (
     <div style={{ width: "100%" }}>
       {isLoading && <LoadingOverlay />}
-      <AppTopbar />
       <motion.div
         initial="hidden"
         whileInView="visible"

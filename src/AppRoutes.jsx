@@ -5,6 +5,9 @@ import React, { lazy, Suspense, useState } from "react";
 
 // ============ Customm component routes ========================
 const DashboardPage = lazy(() => import("./views/dashboard/Dashboard"));
+const ProductDetailPage = lazy(() =>
+  import("./views/products/ProductDetailPage.jsx")
+);
 
 function AppRoutes() {
   const privateDefaultRoutes = [
@@ -13,6 +16,10 @@ function AppRoutes() {
       name: "dashboard",
       element: DashboardPage, // Replace with the actual component
       layout: "/private"
+    },
+    {
+      path: "/product/detail/:slug",
+      element: ProductDetailPage
     }
   ];
 

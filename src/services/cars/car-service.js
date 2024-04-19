@@ -1,30 +1,35 @@
 import axiosAPI from "../axiosApi";
 
 export async function getAllCars(params = {}) {
-    const response = await axiosAPI.get("cars", { params: params });
-    return response;
+  const response = await axiosAPI.get("cars", { params: params });
+  return response;
 }
 
 export async function getCarById(id) {
-    const response = await axiosAPI.get(`cars/` + id);
-    return response;
+  const response = await axiosAPI.get(`cars/` + id);
+  return response;
+}
+
+export async function getCarBySlug(slug) {
+  const response = await axiosAPI.get(`car/` + slug);
+  return response;
 }
 
 export async function postCar(data) {
-    const response = await axiosAPI.post(`cars`, data, {
-        headers: { "Content-Type": "multipart/form-data" },
-    });
-    return response;
+  const response = await axiosAPI.post(`cars`, data, {
+    headers: { "Content-Type": "multipart/form-data" }
+  });
+  return response;
 }
 
 export async function updateCar(id, data) {
-    const response = await axiosAPI.post(`cars/${id}`, data, {
-        headers: { "Content-Type": "multipart/form-data" },
-    });
-    return response;
+  const response = await axiosAPI.post(`cars/${id}`, data, {
+    headers: { "Content-Type": "multipart/form-data" }
+  });
+  return response;
 }
 
 export async function deleteCarById(id) {
-    const response = await axiosAPI.delete(`cars/${id}`);
-    return response;
+  const response = await axiosAPI.delete(`cars/${id}`);
+  return response;
 }

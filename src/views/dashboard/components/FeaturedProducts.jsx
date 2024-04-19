@@ -82,8 +82,8 @@ export default function FeaturedProducts() {
 
   console.log("featured products : ", data);
 
-  const handleClick = (productType) => {
-    navigate("/products", { state: { productType: productType.name } });
+  const handleProductNameClick = (productDetail) => {
+    navigate("/product/detail/" + productDetail?.slug);
   };
 
   const getSeverity = (product) => {
@@ -120,6 +120,7 @@ export default function FeaturedProducts() {
             }`}
             alt={product?.name}
             onClick={() => {
+              // handleProductNameClick();
               setSelectedProduct(product);
               setDisplayDialog(true);
             }}
@@ -130,14 +131,15 @@ export default function FeaturedProducts() {
               <div
                 className="text-2xl font-bold text-900"
                 onClick={() => {
-                  setSelectedProduct(product);
-                  setDisplayProductDialog(true);
+                  handleProductNameClick(product);
+                  // setSelectedProduct(product);
+                  // setDisplayProductDialog(true);
                 }}
                 style={{
                   cursor: "pointer"
                 }}
               >
-                {product?.name}jjjjj
+                {product?.name}
               </div>
               <Rating value={product?.rating} readOnly cancel={false}></Rating>
               <div className="flex gap-3 align-items-center">
@@ -216,8 +218,9 @@ export default function FeaturedProducts() {
             <div
               className="text-2xl font-bold"
               onClick={() => {
-                setSelectedProduct(product);
-                setDisplayProductDialog(true);
+                handleProductNameClick(product);
+                // setSelectedProduct(product);
+                // setDisplayProductDialog(true);
               }}
               style={{
                 cursor: "pointer"

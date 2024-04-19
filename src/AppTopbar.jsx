@@ -12,11 +12,13 @@ import { useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { getAllCarTypes } from "./services/cars/car-types-service";
+import { useLocation } from "react-router-dom";
 
 const AppTopbar = () => {
   const [cartVisible, setCartVisible] = useState(false);
   const [profileVisible, setProfileVisible] = useState(false);
   const [productsItems, setProductsItems] = useState([]);
+  const location = useLocation();
 
   const navigate = useNavigate();
   const { data, isLoading, isError, error } = useQuery({
@@ -29,7 +31,10 @@ const AppTopbar = () => {
       // Transform data into menu items
       const newProductsItems = data?.data?.map((carType) => ({
         label: carType.name, // Assuming 'name' is the field you want
-        icon: "pi pi-fw pi-car" // Assuming all use the same icon
+        icon: "pi pi-fw pi-car", // Assuming all use the same icon
+        command: () => {
+          navigate("/car-type/" + carType?.slug);
+        }
       }));
       setProductsItems(newProductsItems);
     }
@@ -43,6 +48,11 @@ const AppTopbar = () => {
     return null;
   }
 
+  // Use location to update active item
+  const getMenuItemStyle = (path) => {
+    return location.pathname === path ? { backgroundColor: "#ccc" } : {};
+  };
+
   const profileItems = [
     { label: "John Doe", icon: "pi pi-fw pi-user" },
     { label: "Vendor", icon: "pi pi-fw pi-users" }
@@ -53,9 +63,10 @@ const AppTopbar = () => {
     {
       label: "Home",
       icon: "pi pi-fw pi-home",
-      style: { color: "blue" }, // Example color
+      style: { color: "green !important", background: "yellow !important" },
+      className: "my-p-menuitem-active",
       command: () => {
-        /* Navigate to home */
+        navigate("/");
       }
     },
     // {
