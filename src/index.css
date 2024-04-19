@@ -51,7 +51,6 @@ code {
     7.5px
   ); /* Note the vendor prefix needs the hyphen as well */
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.18);
-  border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   z-index: 4;
 }
@@ -61,10 +60,19 @@ code {
   padding: 0.5rem;
 } */
 
+.p-card .p-card-body,
+.p-card .p-card-body {
+  padding: 0;
+  border-radius: 0;
+}
 @media (max-width: 600px) {
   .p-card .p-card-body,
   .p-card .p-card-body {
     padding: 0.5rem;
     border-radius: 0;
   }
+}
+
+.p-card {
+  border-radius: 0;
 }

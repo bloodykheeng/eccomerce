@@ -19,9 +19,11 @@ import {
 } from "react-router-dom";
 //
 import AppRoutes from "./AppRoutes";
+import { Button } from "primereact/button";
 
 function App() {
   const location = useLocation();
+  const [showBackToTop, setShowBackToTop] = useState(false);
 
   // ===========  App routes ===========
   let myroutes = AppRoutes();
@@ -30,6 +32,26 @@ function App() {
   useEffect(() => {
     setDefaultRoutes(myroutes);
   }, [myroutes]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Show the button when the user scrolls down 100px from the top of the document
+      setShowBackToTop(window.scrollY > 100);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  };
   return (
     <>
       <Suspense
@@ -69,6 +91,20 @@ function App() {
             }
           />
         </Routes>
+        {/* Show spinner only when fetching next page */}
+        {showBackToTop && (
+          <Button
+            onClick={scrollToTop}
+            style={{
+              position: "fixed",
+              bottom: "30px",
+              right: "20px",
+              zIndex: "1000"
+            }}
+          >
+            <i className="pi pi-arrow-up"></i>
+          </Button>
+        )}
       </Suspense>
     </>
   );

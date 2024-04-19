@@ -48,6 +48,7 @@ const LoadingOverlay = () => {
 
 const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
