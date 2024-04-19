@@ -18,4 +18,45 @@ code {
 @tailwind components;
 @tailwind utilities; */
 
-@import "primereact/resources/themes/lara-light-blue/theme.css";
+/* Style for scrollbar track */
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: #1f2937;
+}
+
+/* Style for scrollbar itself */
+::-webkit-scrollbar {
+  width: 12px;
+  background-color: #1f2937;
+}
+
+/* Style for scrollbar thumb (the part that you drag) */
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #555;
+}
+
+.app-topbar {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  /* background: linear-gradient(180deg, #555 0%, #333 100%); */
+  border-radius: 0px;
+
+  /* background-color: rgba(255, 255, 255, 0.3); */
+  backdrop-filter: blur(7.5px);
+  -webkit-backdrop-filter: blur(
+    7.5px
+  ); /* Note the vendor prefix needs the hyphen as well */
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.18);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  z-index: 4;
+}
+
+/* changing the default prime react cards padding  */
+.p-card .p-card-body {
+  padding: 0.5rem;
+}

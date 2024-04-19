@@ -11,7 +11,7 @@ import { Button } from "primereact/button";
 import { useNavigate } from "react-router-dom";
 
 import { getAllDashboardSliderPhotos } from "../../../services/dashboardslider/dashboard-slider-photos-services.js";
-import "primereact/resources/themes/lara-light-blue/theme.css";
+import { Card } from "primereact/card";
 
 //
 import CustomShaderMaterial from "./CustomShaderMaterial";
@@ -101,14 +101,27 @@ const CarouselContainer = () => {
     right: windowWidth > 768 ? "10px" : "initial",
     left: windowWidth > 768 ? "initial" : "50%",
     transform: windowWidth > 768 ? "none" : "translateX(-50%)",
-    backgroundColor: isHovered ? "#FDDFAF" : "#FFE9C7",
+    backgroundColor:
+      windowWidth > 768
+        ? isHovered
+          ? "rgba(255, 255, 255, 0.3)"
+          : "rgba(255, 255, 255, 0.1)"
+        : isHovered
+        ? "rgba(255, 255, 255, 0.3)"
+        : "rgba(255, 255, 255, 0.1)",
+
     padding: "20px",
     borderRadius: "5px",
-    color: isHovered ? "#ffffff" : "#131313",
+    color: isHovered ? "#ffffff" : "#F9F1F1",
     textAlign: "left",
     transition: "all 0.3s ease",
     width: windowWidth > 768 ? "auto" : "100%",
-    marginTop: windowWidth > 768 ? "0" : "0px"
+    marginTop: windowWidth > 768 ? "0" : "0px",
+    backdropFilter: "blur(7.5px)",
+    webkitBackdropFilter: "blur(7.5px)",
+    boxShadow: "0 8px 32px 0 rgba(0, 0, 0, 0.18)",
+    borderRadius: "10px",
+    border: "1px solid rgba(255, 255, 255, 0.18)"
   };
 
   const arrowStyle = {
@@ -116,74 +129,84 @@ const CarouselContainer = () => {
   };
 
   return (
-    <div>
-      <Swiper
-        modules={[Navigation, Pagination, Autoplay, EffectFade]}
-        navigation={{
-          nextEl: ".swiper-button-next-custom",
-          prevEl: ".swiper-button-prev-custom",
-          disabledClass: "swiper-button-disabled"
-        }}
-        pagination={{ clickable: true }}
-        spaceBetween={50}
-        slidesPerView={1}
-        lazy={true}
-        autoplay={{ delay: 7000, disableOnInteraction: false }}
-        loop={true}
-        style={{
-          "--swiper-navigation-color": "#fff",
-          "--swiper-pagination-color": "#fff",
-          "--swiper-button-disabled": windowWidth > 768 ? false : true
-        }}
-      >
-        {data?.data.map((car, index) => (
-          <SwiperSlide zoom={true} key={index}>
-            <img
-              src={`${process.env.REACT_APP_API_BASE_URL}${car.photo_url}`}
-              alt={car.caption}
-              style={{ width: "100%", height: "100%", objectFit: "cover" }}
-              loading="lazy"
-            />
+    <Card>
+      <div>
+        <Swiper
+          modules={[Navigation, Pagination, Autoplay, EffectFade]}
+          navigation={{
+            nextEl: ".swiper-button-next-custom",
+            prevEl: ".swiper-button-prev-custom",
+            disabledClass: "swiper-button-disabled"
+          }}
+          pagination={{ clickable: true }}
+          spaceBetween={50}
+          slidesPerView={1}
+          lazy={true}
+          autoplay={{ delay: 7000, disableOnInteraction: false }}
+          loop={true}
+          style={{
+            "--swiper-navigation-color": "#fff",
+            "--swiper-pagination-color": "#fff",
+            "--swiper-button-disabled": windowWidth > 768 ? false : true
+          }}
+        >
+          {data?.data.map((car, index) => (
+            <SwiperSlide zoom={true} key={index}>
+              <div
+                style={{
+                  width: "100%",
+                  height: windowWidth > 768 ? "85vh" : "auto"
+                }}
+              >
+                {" "}
+                <img
+                  src={`${process.env.REACT_APP_API_BASE_URL}${car.photo_url}`}
+                  alt={car.caption}
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  loading="lazy"
+                />
+              </div>
 
-            <div
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
-              // style={{
-              //   position: "absolute",
-              //   bottom: 10,
-              //   right: 10,
-              //   // left: "50%",
-              //   // transform: "translateX(-50%)",
-              //   backgroundColor: isHovered
-              //     ? "rgba(0, 0, 0, 0.7)"
-              //     : "rgba(0, 0, 0, 0.3)",
-              //   padding: "20px",
-              //   borderRadius: "5px",
-              //   color: isHovered ? "#ffffff" : "#ddd",
-              //   textAlign: "left",
-              //   transition: "all 0.3s ease"
-              // }}
-              style={descriptionStyle}
-            >
-              <h2 style={{ margin: "0 0 10px 0", fontSize: "2rem" }}>
-                {car.title}
-              </h2>
-              <p>{car.caption}</p>
-            </div>
+              <div
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                // style={{
+                //   position: "absolute",
+                //   bottom: 10,
+                //   right: 10,
+                //   // left: "50%",
+                //   // transform: "translateX(-50%)",
+                //   backgroundColor: isHovered
+                //     ? "rgba(0, 0, 0, 0.7)"
+                //     : "rgba(0, 0, 0, 0.3)",
+                //   padding: "20px",
+                //   borderRadius: "5px",
+                //   color: isHovered ? "#ffffff" : "#ddd",
+                //   textAlign: "left",
+                //   transition: "all 0.3s ease"
+                // }}
+                style={descriptionStyle}
+              >
+                <h2 style={{ margin: "0 0 10px 0", fontSize: "2rem" }}>
+                  {car.title}
+                </h2>
+                <p>{car.caption}</p>
+              </div>
 
-            {/* Custom white next/prev buttons (optional) */}
-            <div
-              className="swiper-button-next swiper-button-next-custom"
-              style={arrowStyle}
-            ></div>
-            <div
-              className="swiper-button-prev swiper-button-prev-custom"
-              style={arrowStyle}
-            ></div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </div>
+              {/* Custom white next/prev buttons (optional) */}
+              <div
+                className="swiper-button-next swiper-button-next-custom"
+                style={arrowStyle}
+              ></div>
+              <div
+                className="swiper-button-prev swiper-button-prev-custom"
+                style={arrowStyle}
+              ></div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+    </Card>
   );
 };
 

@@ -15,9 +15,50 @@ import { useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { getAllCarTypes } from "../../../services/cars/car-types-service";
+import { Card } from "primereact/card";
 
 import { Skeleton } from "primereact/skeleton";
 
+const ProductSlide = ({ productType, handleClick }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  const slideStyle = {
+    width: "100%",
+    height: "100%",
+    background: `url("${process.env.REACT_APP_API_BASE_URL}${productType.photo_url}")`,
+    backgroundSize: "cover",
+    cursor: "pointer",
+    boxShadow: "0 2px 4px 0 rgba(0,0,0,0.2)",
+    position: "relative",
+    borderRadius: "0 0 8px 8px"
+  };
+
+  const textStyle = {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    width: "100%",
+    background: "rgba(0, 0, 0, 0.5)",
+    color: isHovered ? "tomato" : "white",
+    padding: "0.5rem",
+    fontSize: "18px",
+    borderRadius: "0 0 8px 8px",
+    zIndex: 2
+  };
+
+  return (
+    <div
+      style={slideStyle}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={() => handleClick(productType)}
+    >
+      <div style={textStyle}>{productType.name}</div>
+    </div>
+  );
+};
+
+//================== main component ================
 export default function ProductTypes() {
   const navigate = useNavigate();
   const { data, isLoading, isError, error } = useQuery({
@@ -48,7 +89,7 @@ export default function ProductTypes() {
   }
 
   return (
-    <>
+    <Card>
       <div
         style={{
           display: "flex",
@@ -56,7 +97,7 @@ export default function ProductTypes() {
           alignItems: "center",
           flexDirection: "column",
           width: "100%",
-          backgroundColor: "#FCFAED",
+          // backgroundColor: "#FCFAED",
           padding: "1rem"
         }}
       >
@@ -89,13 +130,14 @@ export default function ProductTypes() {
             <Swiper
               // slidesPerView={4}
               // spaceBetween={20}
+              slidesPerView={"auto"}
               centeredSlides={true}
               modules={[Navigation, Pagination, Autoplay]}
               // navigation
-              pagination={{ clickable: true }}
+
               className="mySwiper"
               autoplay={{ delay: 5000, disableOnInteraction: false }}
-              loop={true}
+              // loop={true}
               // style={{
               //   width: "100%",
               //   height: "170px",
@@ -109,61 +151,39 @@ export default function ProductTypes() {
                 paddingTop: "50px",
                 paddingBottom: "50px"
               }}
-              // slidesPerView={3}
-              // spaceBetween={30}
+              spaceBetween={30}
               pagination={{
                 clickable: true
               }}
-              breakpoints={{
-                0: { slidesPerView: 1 },
-                480: { slidesPerView: 3, spaceBetween: 30 },
-                768: { slidesPerView: 4, spaceBetween: 30 },
-                1024: { slidesPerView: 4, spaceBetween: 30 }
-              }}
+              // breakpoints={{
+              //   0: { slidesPerView: 1 },
+              //   480: { slidesPerView: 3, spaceBetween: 30 },
+              //   768: { slidesPerView: 4, spaceBetween: 30 },
+              //   1024: { slidesPerView: 4, spaceBetween: 30 }
+              // }}
             >
               {data?.data.map((productType, index) => (
                 <SwiperSlide
-                  // style={{
-                  //   width: "200px",
-                  //   height: "150px",
-                  //   margin: "1rem",
-                  //   cursor: "pointer",
-                  //   position: "relative", // Relative positioning for the slide container
-                  //   borderRadius: "8px",
-                  //   boxShadow: "0 2px 4px 0 rgba(0,0,0,0.2)"
-                  // }}
                   style={{
                     width: "300px",
                     height: "300px",
-                    background: `url("${process.env.REACT_APP_API_BASE_URL}${productType.photo_url}")`,
-                    backgroundSize: "cover",
-                    cursor: "pointer",
-                    boxShadow: "0 2px 4px 0 rgba(0,0,0,0.2)"
+                    boxShadow: "0 2px 4px 0 rgba(0,0,0,0.2)",
+                    borderRadius: "0 0 8px 8px",
+                    padding: "0px",
+                    margin: "0px"
                   }}
-                  onClick={() => handleClick(productType)}
                 >
-                  <div
-                    style={{
-                      position: "absolute",
-                      bottom: 0,
-                      left: 0,
-                      width: "100%",
-                      background: "rgba(0, 0, 0, 0.5)",
-                      color: "white",
-                      padding: "0.5rem",
-                      fontSize: "18px",
-                      borderRadius: "0 0 8px 8px",
-                      zIndex: 2
-                    }}
-                  >
-                    {productType.name}
-                  </div>
+                  <ProductSlide
+                    key={index}
+                    productType={productType}
+                    handleClick={handleClick}
+                  />
                 </SwiperSlide>
               ))}
             </Swiper>
           )}
         </div>
       </div>
-    </>
+    </Card>
   );
 }

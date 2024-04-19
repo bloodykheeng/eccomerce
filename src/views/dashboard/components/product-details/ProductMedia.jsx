@@ -1,4 +1,9 @@
 import React from "react";
+import { ProgressBar } from "primereact/progressbar";
+import { Image } from "primereact/image";
+import { Galleria } from "primereact/galleria";
+import { Carousel } from "primereact/carousel";
+import { Panel } from "primereact/panel";
 
 function ProductMedia({ selectedProduct }) {
   //
@@ -25,41 +30,104 @@ function ProductMedia({ selectedProduct }) {
     height: "100%", // Ensure video fills the container height
     objectFit: "cover" // Cover the area of the div without distorting aspect ratio
   };
+
+  //=============== Galleria ============================
+
+  const itemTemplate = (item) => {
+    return (
+      <img
+        src={`${process.env.REACT_APP_API_BASE_URL}${item.photo_url}`}
+        alt={item.caption}
+        style={{ width: "100%" }}
+      />
+    );
+  };
+
+  const thumbnailTemplate = (item) => {
+    return (
+      <img
+        src={`${process.env.REACT_APP_API_BASE_URL}${item.photo_url}`}
+        alt={item.caption}
+        style={{ width: "80px", height: "56px" }}
+      />
+    );
+  };
+
+  const videoItemTemplate = (video) => {
+    return (
+      <div>
+        <video controls style={{ width: "100%", maxHeight: "300px" }}>
+          <source
+            src={`${process.env.REACT_APP_API_BASE_URL}${video.video_url}`}
+            type="video/mp4"
+          />
+          Your browser does not support the video tag.
+        </video>
+        <p>{video.caption}</p>
+      </div>
+    );
+  };
+
+  // Define responsive options if needed
+  const galleriaResponsiveOptions = [
+    {
+      breakpoint: "1024px",
+      numVisible: 5
+    },
+    {
+      breakpoint: "768px",
+      numVisible: 3
+    },
+    {
+      breakpoint: "560px",
+      numVisible: 1
+    }
+  ];
   return (
     <div
       style={{
         display: "flex",
         flexDirection: "column",
+        gap: "2rem",
         alignItems: "center",
         justifyContent: "center",
         padding: "2rem"
       }}
     >
-      {selectedProduct?.photos?.map((photo, index) => (
-        <div key={index} style={mediaStyle}>
-          <img
-            src={`${process.env.REACT_APP_API_BASE_URL}${photo?.photo_url}`}
-            alt={`Product Image ${index + 1}`}
-            onError={(e) => (e.target.src = "https://via.placeholder.com/150")}
-            style={imageStyle}
-          />
-        </div>
-      ))}
-      {selectedProduct?.videos?.map((video, index) => (
-        <div key={index} style={mediaStyle}>
-          <video
-            controls
-            style={videoStyle}
-            onError={(e) => (e.target.src = "https://via.placeholder.com/150")}
-          >
-            <source
-              src={`${process.env.REACT_APP_API_BASE_URL}${video?.video_url}`}
-              type="video/mp4"
+      <Panel header="Photos">
+        <center>
+          {selectedProduct?.photos && selectedProduct?.photos.length > 0 ? (
+            <Galleria
+              value={selectedProduct?.photos}
+              responsiveOptions={galleriaResponsiveOptions}
+              numVisible={5}
+              circular
+              autoPlay
+              transitionInterval={3000}
+              item={itemTemplate}
+              thumbnail={thumbnailTemplate}
+              style={{ maxWidth: "640px" }}
             />
-            Your browser does not support the video tag.
-          </video>
-        </div>
-      ))}
+          ) : (
+            <p>No photos available.</p>
+          )}
+        </center>
+      </Panel>
+      <Panel header="Videos">
+        <center>
+          {" "}
+          {selectedProduct?.videos && selectedProduct?.videos.length > 0 ? (
+            <Carousel
+              value={selectedProduct.videos}
+              numVisible={3}
+              numScroll={1}
+              itemTemplate={videoItemTemplate}
+            />
+          ) : (
+            <p>No videos available.</p>
+          )}
+        </center>
+      </Panel>
     </div>
   );
 }

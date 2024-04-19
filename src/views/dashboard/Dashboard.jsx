@@ -7,6 +7,7 @@ import AppFooter from "../../AppFooter";
 import ServiceOfferings from "./components/ServiceOfferings";
 import FeaturedProducts from "./components/FeaturedProducts";
 import { ProgressSpinner } from "primereact/progressspinner";
+import { Card } from "primereact/card";
 
 const LoadingOverlay = () => {
   const textVariant = {
@@ -15,7 +16,7 @@ const LoadingOverlay = () => {
   };
 
   return (
-    <div
+    <Card
       style={{
         position: "fixed",
         top: 0,
@@ -26,7 +27,7 @@ const LoadingOverlay = () => {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "white",
+        // backgroundColor: "white",
         zIndex: 9999
       }}
     >
@@ -38,10 +39,10 @@ const LoadingOverlay = () => {
       />
       <motion.div initial="hidden" animate="visible" variants={textVariant}>
         <h1 style={{ marginTop: "20px", fontSize: "24px", color: "#007ad9" }}>
-          MyCar
+          MYCAR
         </h1>
       </motion.div>
-    </div>
+    </Card>
   );
 };
 
@@ -109,7 +110,7 @@ const Dashboard = () => {
         whileInView="visible"
         viewport={{ once: true }}
         transition={{ duration: 0.8, delay: 0.3 }}
-        variants={variant}
+        variants={variants}
       >
         <AppFooter />
       </motion.div>

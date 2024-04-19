@@ -120,40 +120,19 @@ const AppTopbar = () => {
     />
   );
 
+  const handleLoginClick = () => {
+    navigate("/login"); // Assuming '/login' is your path to the login page
+  };
   const end = (
     <React.Fragment>
-      <div className="p-inputgroup" style={{ flex: "1 1 300px" }}>
-        <InputText placeholder="Search product..." style={{ width: "100%" }} />
-        <Button icon="pi pi-search" style={{}} />
-      </div>
+      <Button label="Login" icon="pi pi-user" onClick={handleLoginClick} />
     </React.Fragment>
   );
 
   return (
     <React.Fragment>
-      <div
-        style={{
-          position: "sticky",
-          top: "0",
-          zIndex: "100",
-          width: "100%",
-          backgroundColor: "#ffffff"
-        }}
-      >
-        <Menubar
-          style={{
-            position: "sticky",
-            top: "0",
-            zIndex: "100",
-            width: "100%",
-            backgroundColor: "#ffffff",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-            borderRadius: "8px"
-          }}
-          model={items}
-          start={start}
-          end={end}
-        />
+      <div>
+        <Menubar className="app-topbar" model={items} start={start} end={end} />
       </div>
       <Sidebar
         visible={profileVisible}
